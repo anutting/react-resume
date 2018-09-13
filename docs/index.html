@@ -20,13 +20,12 @@
             <ul class="menu-list">
               <li><a class="nav is-active" href="#project-overview">Project Overview</a></li>
               <li><a class="nav" href="#required-software">List of Required Software</a></li>
-              <li><a class="nav" href="#dependencies">List of Dependencies</a></li>
             </ul>
             <p class="menu-label">Getting Started</p>
             <ul class="menu-list">
-              <li><a class="nav">Software Installation</a></li>
-              <li><a class="nav">AWS Account Setup</a></li>
-              <li><a class="nav">Development Envronment Setup</a></li>
+              <li><a class="nav" href="#software-installation">Software Installation</a></li>
+              <li><a class="nav" href="#aws-account-setup">AWS Account Setup</a></li>
+              <li><a class="nav" href='#dev-env-setup'>Development Envronment Setup</a></li>
             </ul>
             <p class="menu-label">Development</p>
             <ul class="menu-list">
@@ -88,7 +87,7 @@
                   }
               </code></pre>
               <p>Indentation, while mostly useless in programming, helps maintain readibility of the code so ensure to maintain as much indentation when copying code over as possible. Feel free to add your own comments to the code like they are demonstrated above.</p>
-              <p>Some commands will need to be entered into the Terminal to either install software or run the project. They will look similar to blocks of code, but each line will have a "$"" at the start.</p>
+              <p>Some commands will need to be entered into the Terminal to either install software or run the project. They will look similar to blocks of code, but each line will have a "$" at the start. The command excludes the dollar sign.</p>
               <pre><code>$ npm install --save react</code></pre>
             </div>
 
@@ -137,32 +136,35 @@
                 </tbody>
               </table>
             </div>
-            <!-- List of Dependencies -->
-            <p class="title is-4"><a class="header" name="dependencies">List of Dependencies</a></p>
-            <p class="subtitle">Software that will need to be imported into our project using NPM</p>
-            <div class="content has-text-justified">
-              <table class="table is-striped is-hoverable">
-                <tbody>
-                  <tr>
-                    <td>React</td>
-                    <td>
-                      <a href="https://reactjs.org" target="_blank">Official Site</a>
-                    </td>
-                    <td>
-                      <pre><code>npm install --save react react-dom react-router-dom</code></pre>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Bulma</td>
-                    <td>
-                      <a href="https://bulma.io" target="_blank">Official Site</a>
-                    </td>
-                    <td>
-                      <pre><code>npm install --save bulma</code></pre>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+
+            <!-- Software Installation -->
+            <p class='title is-4'><a class='header' name='software-installation'Software Installation></a></p>
+            <div class='content has-text-justified'>
+              <p>Reference the List of Required software above, visit each official site, and follow the steps for installion. You can install the software using the default settings and should be straightforward.</p>
+            </div>
+
+            <!-- AWS Account Setup -->
+            <p class='title is-4'><a class='header' name='aws-account-setup'>AWS Account Setup</a></p>
+            <p class='subtitle'>This section can be skipped until you are ready to share your site with others.</p>
+            <div class='content has-text-justified'>
+              <p>The sign up process is very simple. Visit the <a href='https://portal.aws.amazon.com/billing/signup#/start'>Amazon Web Services Sign Up page</a> to create your account. You will be asked for some personal information like a phone number and zip code as well as a form of payment. Everything we do will be within the free tier and will not cost you anything. However, an unattended account can incur charges, especially if your site brings a lot of traffic.</p>
+            </div>
+
+            <!-- Development Environment Setup -->
+            <p class='title is-4'><a class='header' name='dev-env-setup'>Development Environment Setup></a></p>
+            <p class='subtitle'>Ensure you have the software from the Software Installation section installed.</p>
+            <div class='content has-text-justified'>
+              <p>Start by creating a folder on your Desktop. Name it: Resume. We will use this folder to store our project's files. Typically a project's folder is named based on the name of the project.</p>
+              <p>Continue by opening a Terminal window on Linux or starting the Git Bash program on Windows.</p>
+              <p>Change directories to the folder we created by typing:</p>
+              <p><pre><code>$ cd Desktop/Resume</code></pre></p>
+              <p>Initialize our project directory:</p>
+              <p><pre><code>$ npm init</code></pre></p>
+              <p>When prompted for input, hit the enter key to use the default option in parentheses. Feel free to add a description and your name as the author. Type "yes" when asked "Is this OK?" and hit enter.</p>
+              <p>If you type "ls" and hit enter in your Terminal, the contents of the folder will be listed. You'll see a new package.json file there. This file contains all of the meta data about the project.</p>
+              <p>Finally, open Visual Studio Code. In the middle of the window, click "Open Folder...", navigate to our Desktop, select the React folder, and click Open.</p>
+              <p>You'll see the contents of the folder listed on the left hand side in the Explorer. Clicking a file will preview it, while double clicking will open it.</p>
+              <p>We are now ready to begin development!</p>
             </div>
 
           </div>
