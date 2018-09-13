@@ -1,0 +1,23 @@
+body {
+  overflow: hidden;
+}
+#menu-box {
+  height: 100%;
+  padding-left:10px;
+  padding-top:10px;
+  background-color: #209cee;
+}
+.menu-label {
+color: black;
+}
+.menu-list a {
+  color: white;
+  border-radius: 4px 0 0 4px;
+}
+.header:hover {
+  color: #209cee;
+}
+.menu-list a.is-active {
+  background-color: white;
+  color: black;
+}

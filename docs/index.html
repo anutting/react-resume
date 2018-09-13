@@ -6,31 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
-    <style>
-      body {
-        overflow: hidden;
-      }
-      #menu-box {
-        height: 100%;
-        padding-left:10px;
-        padding-top:10px;
-        background-color: #209cee;
-      }
-      .menu-label {
-      color: black;
-      }
-      .menu-list a {
-        color: white;
-        border-radius: 4px 0 0 4px;
-      }
-      .header:hover {
-        color: #209cee;
-      }
-      .menu-list a.is-active {
-        background-color: white;
-        color: black;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
     <!-- page body -->
@@ -81,14 +57,42 @@
         <!-- page content -->
         <div class="columns is-centered" style="width:100%">
           <div class="column is-four-fifths is-marginless">
-
+            <!-- Project Overview-->
             <p class="title is-4" style="margin-top: 5px"><a class="header" name="project-overview">Project Overview</a></p>
             <div class="content has-text-justified">
               <p>React Resume Guide is a tutorial for developing and hosting your own resume website using Facebook's popular JavaScript framework: React. Why use something like React for such a small project like this? Well, one of the cornerstone rules of software development is Don't Repeat Yourself (DRY). Leveraging Node.js and its package manager: <a href="https://www.npmjs.com/" target="_blank">Node Package Manager (NPM)</a>, we can easily import free and open source work created by a large community of contributors into our project! We can add interactive graphs, timelines, and other useful components for our React application just by typing a few commands.</p>
               <p>Once our React application is built, the next challenge is sharing it with others. Fortunately many cloud providers, AKA server renting companies,  provide tools for easily deploying an application to one of their computers and in minutes you can have your very own web server answering requests for your React application. I've chosen to use AWS for this project because they are the most commonly used cloud provider and that's what I am familiar with. Feel free to explore <a href="https://cloud.google.com" target="_blank">Google Cloud Platform</a>, <a href="https://azure.microsoft.com/en-us/" target="_blank">Microsoft Azure</a>, or <a href="https://www.digitalocean.com/" target="_blank">Digital Ocean</a>. All of them have free tiers or sign up credit that will allow you to use their services without any cost initially.</p>
               <p>This guide will take you through the required software setup, the AWS Account registration setup,  and the development of the application. All commands and screenshots will be for the Linux-based Operating System: Ubuntu. The steps will be similar with Windows, but extra configuration will be needed. I will do my best to provide the additional Windows instructions. If you are interested in trying out a new Operating System, I highly recommend looking into getting a <a href="https://www.raspberrypi.org/" target="_blank">Raspberry Pi</a>, a cheap computer perfect for small side projects like this one. It runs it's own Linux-based Operating System called Rasbian. However Rasbian is very similar to Ubuntu and the commands should not change. Let's get started by going over the software you'll need to install.</p>
             </div>
+            <p class="title is-6">About this guide</p>
+            <div class="content has-text-justified">
+              <p>This guide will use many different ways to convey information. Many times throughout this guide you will be asked to copy some code into a file. Blocks of code will be presented like this, with the file name commented at the top.</p>
+              <pre><code class="language-javascript">
+                  // main.js
+                  // this is a comment and not executed
+                  /*
+                    This is also a comment
+                    over multiple lines
+                  */
+                  document.onreadystatechange = () => {
+                    if (document.readyState === 'complete') {
+                      // handle the toggling of active class for side bar navigation
+                      let navs = document.querySelectorAll('.nav')
+                      navs.forEach(nav => {
+                        nav.addEventListener('click', () => {
+                          document.querySelector('.nav.is-active').classList.toggle('is-active')
+                          nav.classList.toggle('is-active')
+                        })
+                      })
+                    }
+                  }
+              </code></pre>
+              <p>Indentation, while mostly useless in programming, helps maintain readibility of the code so ensure to maintain as much indentation when copying code over as possible. Feel free to add your own comments to the code like they are demonstrated above.</p>
+              <p>Some commands will need to be entered into the Terminal to either install software or run the project. They will look similar to blocks of code, but each line will have a "$"" at the start.</p>
+              <pre><code>$ npm install --save react</code></pre>
+            </div>
 
+            <!-- List of Required Software -->
             <p class="title is-4"><a class="header" name="required-software">List of Required Software</a></p>
             <p class="subtitle">Software that will need to be installed on your computer before starting out</p>
             <div class="content has-text-justified">
@@ -133,10 +137,32 @@
                 </tbody>
               </table>
             </div>
-
+            <!-- List of Dependencies -->
             <p class="title is-4"><a class="header" name="dependencies">List of Dependencies</a></p>
             <p class="subtitle">Software that will need to be imported into our project using NPM</p>
             <div class="content has-text-justified">
+              <table class="table is-striped is-hoverable">
+                <tbody>
+                  <tr>
+                    <td>React</td>
+                    <td>
+                      <a href="https://reactjs.org" target="_blank">Official Site</a>
+                    </td>
+                    <td>
+                      <pre><code>npm install --save react react-dom react-router-dom</code></pre>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Bulma</td>
+                    <td>
+                      <a href="https://bulma.io" target="_blank">Official Site</a>
+                    </td>
+                    <td>
+                      <pre><code>npm install --save bulma</code></pre>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
           </div>
@@ -144,20 +170,6 @@
       </div>
     </div>
     <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
-    <script>
-      document.onreadystatechange = () => {
-        if (document.readyState === 'complete') {
-          // handle the toggling of active class for side bar navigation
-          let navs = document.querySelectorAll('.nav')
-          navs.forEach(nav => {
-            nav.addEventListener('click', () => {
-              document.querySelector('.nav.is-active').classList.toggle('is-active')
-              nav.classList.toggle('is-active')
-            })
-          })
-
-        }
-      }
-    </script>
+    <script src="main.js"></script>
   </body>
 </html>
