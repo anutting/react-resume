@@ -29,7 +29,7 @@
             </ul>
             <p class="menu-label">Development</p>
             <ul class="menu-list">
-              <li><a class="nav">React Overview</a></li>
+              <li><a class="nav" href="#react-setup">React Setup</a></li>
               <li><a class="nav">Data Entry</a></li>
               <li><a class="nav">Skills Page</a></li>
               <li><a class="nav">Experience Page</a></li>
@@ -103,7 +103,7 @@
                         <img src="assets/vscode.png">
                       </figure>
                     </td>
-                    <td>Visual Studio Code</td>
+                    <td>Visual Studio Code (VSCode)</td>
                     <td>Integrated Development Environment (IDE)</td>
                     <td>
                       <a href="https://code.visualstudio.com/" target="_blank">Official Site</a>
@@ -139,7 +139,7 @@
 
             <!-- Software Installation -->
             <p class='title is-4'><a class='header' name='software-installation'Software Installation></a></p>
-            <div class='content has-text-justified'>
+            <div class='content'>
               <p>Reference the List of Required software above, visit each official site, and follow the steps for installion. You can install the software using the default settings and should be straightforward.</p>
             </div>
 
@@ -151,9 +151,9 @@
             </div>
 
             <!-- Development Environment Setup -->
-            <p class='title is-4'><a class='header' name='dev-env-setup'>Development Environment Setup></a></p>
+            <p class='title is-4'><a class='header' name='dev-env-setup'>Development Environment Setup</a></p>
             <p class='subtitle'>Ensure you have the software from the Software Installation section installed.</p>
-            <div class='content has-text-justified'>
+            <div class='content'>
               <p>Start by creating a folder on your Desktop. Name it: Resume. We will use this folder to store our project's files. Typically a project's folder is named based on the name of the project.</p>
               <p>Continue by opening a Terminal window on Linux or starting the Git Bash program on Windows.</p>
               <p>Change directories to the folder we created by typing:</p>
@@ -162,9 +162,204 @@
               <p><pre><code>$ npm init</code></pre></p>
               <p>When prompted for input, hit the enter key to use the default option in parentheses. Feel free to add a description and your name as the author. Type "yes" when asked "Is this OK?" and hit enter.</p>
               <p>If you type "ls" and hit enter in your Terminal, the contents of the folder will be listed. You'll see a new package.json file there. This file contains all of the meta data about the project.</p>
-              <p>Finally, open Visual Studio Code. In the middle of the window, click "Open Folder...", navigate to our Desktop, select the React folder, and click Open.</p>
+              <p>Finally, open Visual Studio Code. In the middle of the window, click "Open Folder...", navigate to the Desktop, select the React folder, and click Open.</p>
               <p>You'll see the contents of the folder listed on the left hand side in the Explorer. Clicking a file will preview it, while double clicking will open it.</p>
-              <p>We are now ready to begin development!</p>
+              <p>While in Visual Studio Code, click Terminal in the top menu, then select New Terminal. From this point forware we can use this convenient terminal for future commands.</p>
+              <p>Let's set up some folders we'll need before we start with development</p>
+              <p><pre><code>$ mkdir -p client/assets client/data client/styles client/src/components</code></pre></p>
+              A brief overview of the folders we just made:
+              <ul>
+                <li>client: All files our web site will use. These files are sent to a user's browser when they request our site.</li>
+                <li>client/src: src is short for source. All of the code we will write for our project.</li>
+                <li>client/src/components: Each visual element is a component. A header, footer, button, or table are all different components.</li>
+                <li>client/data: Information our site will display. Think of the data a resume will need to show. Items such as work history, skills, experience, and education</li>
+                <li>client/styles: Everything related to the theme of our site.</li>
+                <li>client/assets: Other files like images.</li>
+              </ul>
+              Your Visual Studio code window should look something like this, without the docs folder:
+
+              <img src="assets/dev-setup.png"/>
+
+              <p>Next, we need to set up a Webpack configuration to properly serve our files for development. Webpack is widely used in web sites because it allows us to bundle and optimize our code. If you'd like to read more, the <a href="https://webpack.js.org/" target="_blank">official site</a> has excellent documentation.</p>
+
+              <p>Create the webpack configuration file:</p>
+              <P><pre><code>$ touch webpack.config.js</code></pre></P>
+              <p>Since we are now beginning to edit files, ensure you <b>always save your files with ctrl+s.</b> Alternatively, in VSCode navigate to file > preferences > Settings, then change the autosave setting to "After Delay", then change the delay to 2000 (2 seconds).</p>
+        
+              <p>Open the file, then copy the following code into it:</p>
+              <p><pre><code>
+                const path = require('path')
+                const fs = require('js')
+                const webpack = require('webpack')
+                const HtmlWebpackPlugin = require('html-webpack-plugin')
+                const cleanWebpackPlugin = require('clean-webpack-plugin')
+                
+                const config = {
+                  mode: 'none',
+                  entry: {
+                    app: './client/src/index.js'            // Tell webpack where to find the beginning of our app's code
+                  },
+                  output: {
+                    filename: '[name].bundle.js',           // Combine all of our app's files into one file with this name
+                    path: path.resolve(__dirname, 'build')  // Output all files to the build directory
+                  },
+                  plugins: [
+                    new CleanWebpackPlugin(['build']),
+                    new HtmlWebpackPlugin({
+                      template: './client/index.html'
+                    })
+                  ],
+                  resolve: {
+                    extensions: ['*', '.js']
+                  },
+                  modules: {                                 // Tell webpack how to handle different file types
+                    rules: [
+                      {
+                        test: /\.(js|jsx)$/,
+                        exclude: /node_modules/,
+                        use: ['babel-loader']
+                      },
+                      {
+                        test: /\.css$/,
+                        use: [
+                          'style-loader',
+                          'css-loader',
+                        ]
+                      },
+                      {
+                        test: /\.(png|svg|jpg|gif)$/,
+                        use: [
+                          'file-loader'
+                        ]
+                      },
+                      {
+                        test: /\.scss$/,
+                        use: [
+                          'style-loader',
+                          'css-loader',
+                          'sass-loader'
+                        ]
+                      }
+                    ]
+                  }
+                }
+                
+                module.exports = (env, argv) => {
+                  // Add additional config for development mode
+                  if (argv.mode === 'development') {
+                    config.devtool = 'inline-source-map'
+                    config.devServer = {
+                      contentBase: './build',
+                      hot: true
+                    }
+                    config.plugins.push(new webpack.HotModuleReplacementPlugin()) // Refresh the page for us when a file changes
+                  }
+                
+                  return config
+                }
+              </code></pre></p>
+
+              <P>Next, we must install some packages to start. We can install them all with one command, but that can get lengthy so I broke them up:</P>
+              <P><pre><code>
+                $ npm i -D webpack
+                $ npm i -D webpack-cli
+                $ npm i -D html-webpack-plugin
+                $ npm i -D webpack-dev-server
+                $ npm i -D css-loader
+                $ npm i -D sass-loader
+                $ npm i -D style-loader
+                $ npm i -D file-loader
+                $ npm i -D node-sass
+                $ npm i -D babel-loader
+                $ npm i -D @babel/core
+                $ npm i -D @babel/preset-env
+                $ npm i -D @babel/preset-react
+                $ npm i -D babel-plugin-syntax-dynamic-import
+                $ npm i -D babel-plugin-transform-class-properties
+              </code></pre></P>
+
+              <p>If you open the package.json folder, you will now see a devDependencies block with all of the packages and their versions listed.</p>
+              <p>Let's create a couple more files:</p>
+              <p><pre><code>
+                $ touch .babelrc
+                $ touch .gitignore
+              </code></pre></p>
+              <p>.babelrc contains configuration for babel. .gitignore will ignore files from being added to git. Using git is out of scope of this guide, but I took the steps so I'll include them here anyways.</p>
+
+              <p>.babelrc should include:</p>
+              <p><pre><code>
+                {
+                  "presets": [
+                    "@babel/preset-env",
+                    "@babel/preset-react"
+                  ],
+                  "plugins": [
+                    "transform-class-properties",
+                    "syntax-dynamic-import"
+                  ]
+                }
+              </code></pre></p>
+              <p>.gitignore should include:</p>
+              <p><pre><code>
+                node_modules
+                build
+                client/build
+              </code></pre></p>
+
+              <p>You may have noticed a block named "scripts" in the package.json. This block allows us to define reusable commands for our project. Let's add a "start" and "build" command to that block so it ends up looking like this:</p>
+              <p><pre><code>
+                "scripts": {
+                  "start": "webpack-dev-server --open --mode=development",
+                  "build": "webpack --mode=production",
+                  "test": "echo \"Error: no test specified\" && exit 1"
+                },
+              </code></pre></p>
+
+              <p>Let's create our first client file: the index.html</p>
+              <p><pre><code>
+                $ touch client/index.html
+              </code></pre></p>
+
+              <p>The contents should look like this, but subsitute my name for your name.</p>
+              <textarea readonly>
+                <!DOCTYPE html>
+                  <html>
+                    <head>
+                      <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1">
+                      <title>Alex Nutting - Resume</title>
+                    </head>
+                    <body>
+                      <div id="root"></div>
+                    </body>
+                  </html>
+              </textarea>
+
+              <p>With everything in place, we are now ready to begin development!</p>
+            </div>
+
+            <!-- React Setup -->
+            <p class='title is-4'><a class='header' name='react-setup'>React Setup</a></p>
+            <div class='content'>
+              <p>All of our React code will be in the client/src directory. Before we can get started, we'll need to install some more packages. This is all of the packages our site will need.</p>
+              <p><pre><code>
+                $ npm i -S react
+                $ npm i -S react-dom
+                $ npm i -S react-router-dom
+                $ npm i -S react-loadable
+                $ npm i -S history
+                $ npm i -S bulma
+                $ npm i -S bulma-extensions 
+              </code></pre></p>
+
+              <p>Let's create a few files to start.</p>
+              <p><pre><code>
+                $ touch client/src/index.js
+                $ touch client/src/app.js
+                $ touch client/src/components/
+                $ touch client/styles/index.scss
+              </code></pre></p>
+
             </div>
 
           </div>
