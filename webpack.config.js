@@ -1,8 +1,8 @@
 const path = require('path')
-const fs = require('js')
+const fs = require('fs')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const cleanWebpackPlugin = require('clean-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const config = {
   mode: 'none',
@@ -22,7 +22,7 @@ const config = {
   resolve: {
     extensions: ['*', '.js']
   },
-  modules: {                                 // Tell webpack how to handle different file types
+  module: {                                 // Tell webpack how to handle different file types
     rules: [
       {
         test: /\.(js|jsx)$/,

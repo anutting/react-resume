@@ -30,17 +30,18 @@
             <p class="menu-label">Development</p>
             <ul class="menu-list">
               <li><a class="nav" href="#react-setup">React Setup</a></li>
-              <li><a class="nav">Data Entry</a></li>
-              <li><a class="nav">Skills Page</a></li>
-              <li><a class="nav">Experience Page</a></li>
-              <li><a class="nav">Education Page</a></li>
+              <li><a class="nav" href="#data-entry">Data Entry</a></li>
+              <li><a class="nav" href="#home-page">Home Page</a></li>
+              <li><a class="nav" href="#experience-page">Experience Page</a></li>
+              <li><a class="nav" href="#education-page">Education Page</a></li>
+              <li><a class="nav" href="#contact-page">Contact Page</a></li>
             </ul>
             <p class="menu-label">Deployment</p>
             <ul class="menu-list">
-              <li><a class="nav">Project Build</a></li>
-              <li><a class="nav">AWS S3</a></li>
-              <li><a class="nav">AWS Cloudfront</a></li>
-              <li><a class="nav">Getting a Custom URL</a></li>
+              <li><a class="nav" href="#build">Project Build</a></li>
+              <li><a class="nav" href="#S3">AWS S3</a></li>
+              <li><a class="nav" href="#cloudfront">AWS Cloudfront</a></li>
+              <li><a class="nav" href="#dns">Purchasing a Custom URL</a></li>
             </ul>
           </aside>
         </div>
@@ -67,28 +68,32 @@
             <div class="content has-text-justified">
               <p>This guide will use many different ways to convey information. Many times throughout this guide you will be asked to copy some code into a file. Blocks of code will be presented like this, with the file name commented at the top.</p>
               <pre><code class="language-javascript">
-                  // main.js
-                  // this is a comment and not executed
-                  /*
-                    This is also a comment
-                    over multiple lines
-                  */
-                  document.onreadystatechange = () => {
-                    if (document.readyState === 'complete') {
-                      // handle the toggling of active class for side bar navigation
-                      let navs = document.querySelectorAll('.nav')
-                      navs.forEach(nav => {
-                        nav.addEventListener('click', () => {
-                          document.querySelector('.nav.is-active').classList.toggle('is-active')
-                          nav.classList.toggle('is-active')
-                        })
-                      })
-                    }
-                  }
+// main.js
+// this is a comment and not executed
+/*
+  This is also a comment
+  over multiple lines
+*/
+document.onreadystatechange = () => {
+  if (document.readyState === 'complete') {
+    // handle the toggling of active class for side bar navigation
+    let navs = document.querySelectorAll('.nav')
+    navs.forEach(nav => {
+      nav.addEventListener('click', () => {
+        document.querySelector('.nav.is-active').classList.toggle('is-active')
+        nav.classList.toggle('is-active')
+      })
+    })
+  }
+}
               </code></pre>
               <p>Indentation, while mostly useless in programming, helps maintain readibility of the code so ensure to maintain as much indentation when copying code over as possible. Feel free to add your own comments to the code like they are demonstrated above.</p>
               <p>Some commands will need to be entered into the Terminal to either install software or run the project. They will look similar to blocks of code, but each line will have a "$" at the start. The command excludes the dollar sign.</p>
               <pre><code>$ npm install --save react</code></pre>
+
+              <p>Here's a couple examples of the finished product we'll be making.</p>
+              <img src="assets/home-page.png"/>
+              <img src="assets/experience-page.png"/>
             </div>
 
             <!-- List of Required Software -->
@@ -188,152 +193,154 @@
         
               <p>Open the file, then copy the following code into it:</p>
               <p><pre><code>
-                const path = require('path')
-                const fs = require('js')
-                const webpack = require('webpack')
-                const HtmlWebpackPlugin = require('html-webpack-plugin')
-                const cleanWebpackPlugin = require('clean-webpack-plugin')
-                
-                const config = {
-                  mode: 'none',
-                  entry: {
-                    app: './client/src/index.js'            // Tell webpack where to find the beginning of our app's code
-                  },
-                  output: {
-                    filename: '[name].bundle.js',           // Combine all of our app's files into one file with this name
-                    path: path.resolve(__dirname, 'build')  // Output all files to the build directory
-                  },
-                  plugins: [
-                    new CleanWebpackPlugin(['build']),
-                    new HtmlWebpackPlugin({
-                      template: './client/index.html'
-                    })
-                  ],
-                  resolve: {
-                    extensions: ['*', '.js']
-                  },
-                  modules: {                                 // Tell webpack how to handle different file types
-                    rules: [
-                      {
-                        test: /\.(js|jsx)$/,
-                        exclude: /node_modules/,
-                        use: ['babel-loader']
-                      },
-                      {
-                        test: /\.css$/,
-                        use: [
-                          'style-loader',
-                          'css-loader',
-                        ]
-                      },
-                      {
-                        test: /\.(png|svg|jpg|gif)$/,
-                        use: [
-                          'file-loader'
-                        ]
-                      },
-                      {
-                        test: /\.scss$/,
-                        use: [
-                          'style-loader',
-                          'css-loader',
-                          'sass-loader'
-                        ]
-                      }
-                    ]
-                  }
-                }
-                
-                module.exports = (env, argv) => {
-                  // Add additional config for development mode
-                  if (argv.mode === 'development') {
-                    config.devtool = 'inline-source-map'
-                    config.devServer = {
-                      contentBase: './build',
-                      hot: true
-                    }
-                    config.plugins.push(new webpack.HotModuleReplacementPlugin()) // Refresh the page for us when a file changes
-                  }
-                
-                  return config
-                }
+const path = require('path')
+const fs = require('fs')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+
+const config = {
+  mode: 'none',
+  entry: {
+    app: './client/src/index.js'            // Tell webpack where to find the beginning of our app's code
+  },
+  output: {
+    filename: '[name].bundle.js',           // Combine all of our app's files into one file with this name
+    path: path.resolve(__dirname, 'build')  // Output all files to the build directory
+  },
+  plugins: [
+    new CleanWebpackPlugin(['build']),
+    new HtmlWebpackPlugin({
+      template: './client/index.html'
+    })
+  ],
+  resolve: {
+    extensions: ['*', '.js']
+  },
+  module: {                                 // Tell webpack how to handle different file types
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader']
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+        ]
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader'
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      }
+    ]
+  }
+}
+
+module.exports = (env, argv) => {
+  // Add additional config for development mode
+  if (argv.mode === 'development') {
+    config.devtool = 'inline-source-map'
+    config.devServer = {
+      contentBase: './build',
+      hot: true
+    }
+    config.plugins.push(new webpack.HotModuleReplacementPlugin()) // Refresh the page for us when a file changes
+  }
+
+  return config
+}
               </code></pre></p>
 
               <P>Next, we must install some packages to start. We can install them all with one command, but that can get lengthy so I broke them up:</P>
               <P><pre><code>
-                $ npm i -D webpack
-                $ npm i -D webpack-cli
-                $ npm i -D html-webpack-plugin
-                $ npm i -D webpack-dev-server
-                $ npm i -D css-loader
-                $ npm i -D sass-loader
-                $ npm i -D style-loader
-                $ npm i -D file-loader
-                $ npm i -D node-sass
-                $ npm i -D babel-loader
-                $ npm i -D @babel/core
-                $ npm i -D @babel/preset-env
-                $ npm i -D @babel/preset-react
-                $ npm i -D babel-plugin-syntax-dynamic-import
-                $ npm i -D babel-plugin-transform-class-properties
+$ npm i -D webpack
+$ npm i -D webpack-cli
+$ npm i -D html-webpack-plugin
+$ npm i -D clean-webpack-plugin
+$ npm i -D webpack-dev-server
+$ npm i -D css-loader
+$ npm i -D sass-loader
+$ npm i -D style-loader
+$ npm i -D file-loader
+$ npm i -D node-sass
+$ npm i -D babel-loader
+$ npm i -D @babel/core
+$ npm i -D @babel/preset-env
+$ npm i -D @babel/preset-react
+$ npm i -D babel-plugin-syntax-dynamic-import
+$ npm i -D babel-plugin-transform-class-properties
               </code></pre></P>
 
               <p>If you open the package.json folder, you will now see a devDependencies block with all of the packages and their versions listed.</p>
               <p>Let's create a couple more files:</p>
               <p><pre><code>
-                $ touch .babelrc
-                $ touch .gitignore
+$ touch .babelrc
+$ touch .gitignore
               </code></pre></p>
               <p>.babelrc contains configuration for babel. .gitignore will ignore files from being added to git. Using git is out of scope of this guide, but I took the steps so I'll include them here anyways.</p>
 
               <p>.babelrc should include:</p>
               <p><pre><code>
-                {
-                  "presets": [
-                    "@babel/preset-env",
-                    "@babel/preset-react"
-                  ],
-                  "plugins": [
-                    "transform-class-properties",
-                    "syntax-dynamic-import"
-                  ]
-                }
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "transform-class-properties",
+    "syntax-dynamic-import"
+  ]
+}
               </code></pre></p>
               <p>.gitignore should include:</p>
               <p><pre><code>
-                node_modules
-                build
-                client/build
+node_modules
+build
+client/build
               </code></pre></p>
 
               <p>You may have noticed a block named "scripts" in the package.json. This block allows us to define reusable commands for our project. Let's add a "start" and "build" command to that block so it ends up looking like this:</p>
               <p><pre><code>
-                "scripts": {
-                  "start": "webpack-dev-server --open --mode=development",
-                  "build": "webpack --mode=production",
-                  "test": "echo \"Error: no test specified\" && exit 1"
-                },
+  "scripts": {
+    "start": "webpack-dev-server --open --mode=development",
+    "build": "webpack --mode=production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
               </code></pre></p>
 
               <p>Let's create our first client file: the index.html</p>
               <p><pre><code>
-                $ touch client/index.html
+$ touch client/index.html
               </code></pre></p>
 
               <p>The contents should look like this, but subsitute my name for your name.</p>
-              <textarea readonly>
-                <!DOCTYPE html>
-                  <html>
-                    <head>
-                      <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-                      <meta name="viewport" content="width=device-width, initial-scale=1">
-                      <title>Alex Nutting - Resume</title>
-                    </head>
-                    <body>
-                      <div id="root"></div>
-                    </body>
-                  </html>
-              </textarea>
+              <p><pre><code>
+&lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8"&gt;
+      &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+      &lt;title&gt;Alex Nutting - Resume&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;div id="root"&gt;&lt;/div&gt;
+      &lt;script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"&gt;&lt;/script&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+                </code></pre></p>
 
               <p>With everything in place, we are now ready to begin development!</p>
             </div>
@@ -343,23 +350,558 @@
             <div class='content'>
               <p>All of our React code will be in the client/src directory. Before we can get started, we'll need to install some more packages. This is all of the packages our site will need.</p>
               <p><pre><code>
-                $ npm i -S react
-                $ npm i -S react-dom
-                $ npm i -S react-router-dom
-                $ npm i -S react-loadable
-                $ npm i -S history
-                $ npm i -S bulma
-                $ npm i -S bulma-extensions 
+$ npm i -S react
+$ npm i -S react-dom
+$ npm i -S react-router-dom
+$ npm i -S react-loadable
+$ npm i -S react-hot-loader
+$ npm i -S bulma
+$ npm i -S bulma-extensions 
               </code></pre></p>
 
               <p>Let's create a few files to start.</p>
               <p><pre><code>
-                $ touch client/src/index.js
-                $ touch client/src/app.js
-                $ touch client/src/components/
-                $ touch client/styles/index.scss
+$ touch client/src/index.js
+$ touch client/src/App.js
+$ touch client/src/Router.js
+$ touch client/src/components/HomePage.js
+$ touch client/styles/index.scss
               </code></pre></p>
 
+              <ul>
+                <li>index.js: The start of our site code.</li>
+                <li>App.js: The start of our react application.</li>
+                <li>Router.js: Configure react to show different pages depending on the URL. For example: oursite.com/home would be different than oursite.com/experience</li>
+                <li>HomePage.js: The page a user first sees when they visit our site.</li>
+                <li>index.scss: All of the themeing for our site.</li>
+              </ul>
+
+              <p>index.js should include the following:</p>
+              <p><pre><code>
+// import dependencies we'll need for this file
+import React from 'react'
+import { render } from 'react-dom'
+import { AppContainer } from 'react-hot-loader'
+
+// import our react app
+import App from './App'
+
+// reference the mount point in our index.html
+const mountPoint = document.getElementById('root')
+
+// Tell react to start the application
+render(
+  &lt;AppContainer&gt;
+    &lt;App/&gt;
+  &lt;/AppContainer&gt;,
+  mountPoint
+)
+
+// Setup automatic refreshing when we change a file
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default
+    render(
+      &lt;AppContainer&gt;
+        &lt;NextApp/&gt;
+      &lt;/AppContainer&gt;,
+      mountPoint
+    )
+  })
+}
+              </code></pre></p>
+
+              <p>App.js should include:</p>
+              <p><pre><code>
+import React from 'react'
+import { HashRouter } from 'react-router-dom'
+import Router from './Router'
+
+import '../styles/index.scss'
+
+export default class App extends React.Component {
+  render () {
+    return (
+      &lt;HashRouter&gt;
+        &lt;Router/&gt;
+      &lt;/HashRouter&gt;
+    )
+  }
+}
+              </code></pre></p>
+
+              <p>Router.js should include:</p>
+              <p><pre><code>
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+import Loadable from 'react-loadable'
+
+const LoadHomePage = Loadable({
+  loader: () => import('./components/HomePage'),
+  loading: () => &lt;div&gt;Loading...&lt;/div&gt;
+})
+
+export default () => {
+  return (
+    &lt;Switch&gt;
+      &lt;Route exact path='/' component={LoadHomePage}/&gt;
+    &lt;/Switch&gt;
+  )
+}
+              </code></pre></p>
+
+              <p>HomePage.js should include:</p>
+              <p><pre><code>
+import React from 'react'
+
+export default class HomePage extends React.Component {
+  render () {
+    return (
+      &lt;div&gt;Hello World! Welcome to my Resume!&lt;/div&gt;
+    )
+  }
+}
+              </code></pre></p>
+
+              <p>Finally, index.scss should include:</p>
+              <p><pre><code>
+@import "~bulma/bulma.sass";
+              </code></pre></p>
+
+              <p>It's about time to start the application. You can run our development server using the command below. You'll notice a new browser tab open with our site presented to us. The terminal will now have a programm running in it that will watch for changes in our react files, then update our page accordningly. To exit this program at any time, click on the Terminal then press ctrl+c. I recommend you open a separate Terminal window for the npm start command, then leave the VSCode Terminal open for additional commands.</p>
+              <p><pre><code>
+$ npm start
+              </code></pre></p>
+            </div>
+
+            <!-- Data Entry -->
+            <p class='title is-4'><a class='header' name='data-entry'>Data Entry</a></p>
+            <div class='content'>
+              <p>Since the data we want to display on our resume may change, it's better to put this information in a file separate from the rest of the application. This will make it easy to update later since we will only need to change this single file. Create an index.js in the data folder.</p>
+              <p><pre><code>
+$ touch client/data/index.js
+              </code></pre></p>
+
+              <p>The skeleton of our data/index.js is presented below. You may copy this skeleton and fill out the information for yourself. I will also include my data for reference.</p>
+              <p><pre><code>
+export default {
+  name: "",
+  summary: "",
+  contact: {
+    location: "",
+    email: "",
+    phone: "", // optional
+    homePage: ""
+  },
+  experience: [
+    "",
+    ""
+  ],
+  education: [
+    {
+      school: "",
+      description: "",
+      startDate: "",
+      endDate: ""
+    }
+  ],
+  professions: [
+    {
+      employer: "",
+      title: "",
+      startDate: "",
+      endDate: "",
+      responsibilities: [
+        "",
+        ""
+      ]
+    }
+  ]
+}
+              </code></pre></p>
+              <p><pre><code>
+export default {
+  name: "Alex Nutting",
+  summary: "Highly motivated Software Engineer with excellent team collaboration skills. Able to thrive in very busy, deadline centric environments. Strong written and verbal communication skills.",
+  contact: {
+    location: "Slatersville, RI 02876",
+    email: "nuttinga17@gmail.com",
+    phone: "",
+    homePage: "https://github.com/anutting"
+  },
+  experience: [
+    "Back-end development with Node.js.",
+    "Front-end development with HTML, CSS, Javascript, React, Bulma, & Bootstrap",
+    "Development tools: Bash, Vagrant, DOcker, Git, & Webpack",
+    "Usage of systems such as Jenkins, Puppet, AWS, and Kubernetes."
+  ],
+  education: [
+    {
+      school: "New England Institute of Technology, Each Greenwich, RI",
+      description: "Pursuing a Bachelor of Science degreen in Information Technology/Software Engineering. GPA 3.7. Dean's List made regularly. Alpha Chi National Honor Society member.",
+      startDate: '06/2015',
+      endDate: 'present'
+    },
+    {
+      school: "Wentorth Institute of Technology, Boston, MA",
+      description: "Coursework completed toward a Bachelor of Science degree in Computer Sciences",
+      startDate: "08/2012",
+      endDate: "05/2013"
+    },
+  ],
+  professions: [
+    {
+      employer: "Hasbro, Inc. Pawtucket, RI",
+      title: "Systems Engineer Intern, now Associate Systems Engineer",
+      startDate: "2017",
+      endDate: "present",
+      responsibilities: [
+        "Support Continuous Integration and Continuous Delivery pipelines.",
+        "Create tools to automate or streamline processes.",
+        "Participate in regular scrum rituals.",
+        "Work with partners from different departments to gather requirements and create web applications that meet those requirements.",
+        "Identify, document, and manage tasks in a ticketing system."
+      ]
+    },
+    {
+      employer: "Bristol Warren Regional School District, Bristol, RI",
+      title: "Information Technology Intern",
+      startDate: "2016",
+      endDate: "2017",
+      responsibilities: [
+        "Collaborate with Network and System administrators to complete IT projects.",
+        "Provide technical support to district employees and students through the use of a ticketing system.",
+        "Install, repair, and inventory new and hold hardware: Laptops, Desktops, printers, projectors, etc."
+      ]
+    }
+  ]
+}
+              </code></pre></p>
+              <p>When comparing my data to the skeleton, notice how there are many items within the square brackets ([ ]). These brackets can hold as many records as you like, as long as your follow the pattern within the brackets.</p>
+            </div>
+
+            <!-- Home Page -->
+            <p class="title is-4"><a class="header" name="home-page">The Home Page</a></p>
+            <div class="content">
+              <p>Let's begin by adding a new component: the Navbar.</p>
+              <p><pre><code>
+$ touch client/src/components/Navbar.js
+              </code></pre></p>
+
+              <p>Its contents, ensuring you replace my name with yours:</p>
+              <p><pre><code>
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+export default class Navbar extends React.Component {
+  // Keep track of whether the hamburge menu is toggled or not
+  state = { isMenuActive: false }
+
+  // Event to update the isMenuActive flag
+  toggleMenu = () => this.setState(oldState => Object.assign({}, oldState, { isMenuActive: !oldState.isMenuActive}))
+
+  // Return the proper class when the menu is active
+  activeClass = () => this.state.isMenuActive ? 'is-active' : ''
+
+  render () {
+    return (
+      &lt;div className='navbar'&gt;
+        &lt;div className='container'&gt;
+          &lt;div className='navbar-brand'&gt;
+            &lt;Link to="/"&gt;
+              &lt;span className='icon is-large'&gt;
+                &lt;i className='fas fa-2x fa-home'/&gt;
+              &lt;/span&gt;
+            &lt;/Link&gt;
+            &lt;span className={`navbar-burger ${this.activeClass()}`} data-target='navbarMenu' onClick={this.toggleMenu}&gt;
+              &lt;span&gt;&lt;/span&gt;
+              &lt;span&gt;&lt;/span&gt;
+              &lt;span&gt;&lt;/span&gt;
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div id='navbarMenu' className={`navbar-menu ${this.activeClass()}`}&gt;
+            &lt;div className='navbar-end'&gt;
+              &lt;Link to="/experience" className='navbar-item'&gt;Experience&lt;/Link&gt;
+              &lt;Link to="/education" className='navbar-item'&gt;Education&lt;/Link&gt;
+              &lt;Link to="/contact" className='navbar-item'&gt;Contact&lt;/Link&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+              </code></pre></p>
+
+              <p>We must update the HomePage.js to use our new navbar, give our site a nice background, and use the data we've prepared.</p>
+              <p><pre><code>
+import React from 'react'
+import Navbar from './Navbar'
+import my from '../../data'
+
+export default class HomePage extends React.Component {
+  render () {
+    return (
+      &lt;section className='hero is-info is-fullheight'&gt;
+        &lt;div className='hero-head'&gt;
+          &lt;Navbar /&gt;
+        &lt;/div&gt;
+        &lt;div className='hero-body'&gt;
+          &lt;div className='container'&gt;
+            &lt;h1 className='title'&gt;{my.name}&lt;/h1&gt;
+            &lt;h2 className='subtitle'&gt;{my.summary}&lt;/h2&gt;
+            &lt;ul&gt;
+              {my.experience.map((exp,i) => (
+                &lt;li key={i}&gt;{exp}&lt;/li&gt;
+              ))}
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+    )
+  }
+}
+              </code></pre></p>
+
+              <p>I've given our site a nice blue background. If you'd like to change the color, modify the "is-info" text found on line 7 of the HomePage.js file. Experiement with other options: removing is-info entirely, is-primary, is-danger, is-warning, is-link, is-success, is-light, or is-dark. Also try adding is-bold to any of the previous options for a gradient effect.</p>
+
+            </div>
+
+            <!-- Experience Page -->
+            <p class="title is-4"><a class="header" name="experience-page">The Experience Page</a></p>
+            <div class="content">
+
+              <p>Start my creating the Experience Page file.</p>
+              <p><pre><code>
+$ touch client/src/components/ExperiencePage.js
+              </code></pre></p>
+
+              <p>Its contents should be:</p>
+              <p><pre><code>
+import React from 'react'
+import Navbar from './Navbar'
+
+import my from '../../data'
+
+export default class ExperiencePage extends React.Component {
+  render () {
+    return (
+      &lt;section className='hero is-info is-fullheight'&gt;
+        &lt;div className='hero-head'&gt;
+          &lt;Navbar /&gt;
+        &lt;/div&gt;
+        &lt;div className='hero-body'&gt;
+          &lt;div className='container'&gt;
+            &lt;h1 className='title'&gt;Work Experience&lt;/h1&gt;
+            {my.professions.map((profession,i) =&gt; (
+              &lt;div key={i} className='notification is-info is-narrow'&gt;
+                &lt;p className='title'&gt;{profession.employer}&lt;/p&gt;
+                &lt;p className='subtitle'&gt;{profession.title}. {profession.startDate} - {profession.endDate}&lt;/p&gt;
+                &lt;p&gt;&lt;/p&gt;
+                &lt;ul&gt;
+                  {profession.responsibilities.map((responsibility,j) =&gt; (
+                    &lt;li key={j}&gt;{responsibility}&lt;/li&gt;
+                  ))}
+                &lt;/ul&gt;
+              &lt;/div&gt;
+            ))}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+    )
+  }
+}
+              </code></pre></p>
+              
+              <p>We need to add a new route to our Router. Paste this below the LoadHomePage.</p>
+              <p><pre><code>
+const LoadExperiencePage = Loadable({
+  loader: () => import('./components/ExperiencePage'),
+  loading: () => &lt;div&gt;Loading...&lt;/div&gt;
+})
+              </code></pre></p>
+
+              <p>Add another Route within the Switch.</p>
+              <p><pre><code>
+&lt;Route exact path='/experience' component={LoadExperiencePage}/&gt;
+              </code></pre></p>
+            </div>
+
+            <!-- Education Page -->
+            <p class="title is-4"><a class="header" name="education-page">The Education Page</a></p>
+            <div class="content">
+              <p>Create the Education Page file.</p>
+              <p><pre><code>
+$ touch client/src/components/EducationPage.js
+              </code></pre></p>
+
+              <p>Add content to the Education Page</p>
+              <p><pre><code>
+import React from 'react'
+import Navbar from './Navbar'
+
+import my from '../../data'
+
+export default class EducationPage extends React.Component {
+  render () {
+    return (
+      &lt;section className='hero is-info is-fullheight'&gt;
+        &lt;div className='hero-head'&gt;
+          &lt;Navbar /&gt;
+        &lt;/div&gt;
+        &lt;div className='hero-body'&gt;
+          &lt;div className='container'&gt;
+            &lt;h1 className='title'&gt;Education&lt;/h1&gt;
+            {my.education.map((education,i) =&gt; (
+              &lt;div key={i} className='notification is-info'&gt;
+                &lt;p className='title'&gt;{education.school}&lt;/p&gt;
+                &lt;p className='subtitle'&gt;{education.description}&lt;/p&gt;
+                &lt;p&gt;{education.startDate} - {education.endDate}&lt;/p&gt;
+              &lt;/div&gt;
+            ))}
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+    )
+  }
+}
+              </code></pre></p>
+
+              <p>Similar to the Education page, let's add some code to the Router.js.</p>
+              <p><pre><code>
+const LoadEducationPage = Loadable({
+  loader: () => import('./components/EducationPage'),
+  loading: () => &lt;div&gt;Loading...&lt;/div&gt;
+})
+              </code></pre></p>
+              <p><pre><code>
+&lt;Route exact path='/education' component={LoadEducationPage}/&gt;
+              </code></pre></p>
+            </div>
+
+            <!-- Contact Page -->
+            <p class="title is-4"><a class="header" name="contact-page">The Contact Page</a></p>
+            <div class="content">
+              <p>Let's create our final page: ContactPage.js.</p>
+              <p><pre><code>
+$ touch client/src/components/ContactPage.js
+              </code></pre></p>
+
+              <p>Its contents:</p>
+              <p><pre><code>
+import React from 'react'
+import Navbar from './Navbar'
+
+import my from '../../data'
+
+export default class ContactPage extends React.Component {
+  render () {
+    return (
+      &lt;section className='hero is-info is-fullheight'&gt;
+        &lt;div className='hero-head'&gt;
+          &lt;Navbar /&gt;
+        &lt;/div&gt;
+        &lt;div className='hero-body'&gt;
+          &lt;div className='container'&gt;
+            &lt;h2 className='title'&gt;
+              {my.contact.email}
+              &lt;br/&gt;
+              {my.contact.location}
+              &lt;br/&gt;
+              {my.contact.phone}
+            &lt;/h2&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+    )
+  }
+}
+              </code></pre></p>
+
+              <p>Once again let's add a couple records to our Router:</p>
+              <p><pre><code>
+const LoadContactPage = Loadable({
+  loader: () => import('./components/ContactPage'),
+  loading: () => &lt;div&gt;Loading...&lt;/div&gt;
+})
+              </code></pre></p>
+              <p><pre><code>
+&lt;Route exact path='/contact' component={LoadContactPage}/&gt;
+              </code></pre></p>
+
+              <p>If you made it this far, you now have a basic site to showcase your work! Hopefully you've learned a thing or two about how modern web sites are created. I encourage you to dive deeper into react by watching video guides, reading documentation, and experimenting on your own. In the following sections I'll go over using AWS to make this site available to others.</p>
+
+            </div>
+
+            <!-- Project Build -->
+            <p class="title is-4" style="margin-top: 5px"><a class="header" name="build">Project Build</a></p>
+            <div class="content has-text-justified">
+              <p>Now that our development is complete, we must prepare our project to run in AWS. Webpack allows us to turn all of our client/src files into just a few files. Run the next command and see what happens.</p>
+              <p><pre><code>
+$ npm run build
+              </code></pre></p>
+              <p>A new "buid" folder has been created with a few files. These are the files we will upload to AWS as our web site.</p>
+            </div>
+
+            <!-- AWS S3 -->
+            <p class="title is-4" style="margin-top: 5px"><a class="header" name="S3">AWS S3</a></p>
+            <div class="content has-text-justified">
+              <p>S3 is AWS's storage service. Think of it as a high performance Google Drive or OneDrive made specifically for serving files over the internet. Everytime you upload an image to a web site, it's likely that it ends up in S3. S3 organizes its files into "Buckets". Let's create one now.</p>
+              <p>Log into your AWS account that was set up during the AWS Account Setup section. You should end up at the dashboard picured below.</p>
+              <img src="assets/aws-dash.png"/>
+              <p>Under the Storage section, click on S3.</p>
+              <p>Click the "Create Bucket" button.</p>
+              <p>Under Bucket name type in: &lt;last-name&gt;-resume so my bucket is named nutting-resume, then click next through the rest of the pages.</p>
+              <p>You should see your new bucket in the list. Click on the name. and arrive at your bucket's page.</p>
+              <img src="assets/bucket.png"/>
+              <p>Click the "Upload" button, then "Add files"</p>
+              <p>Navigate to your Desktop &gt; Resume &gt; build</p>
+              <p>ctrl+click each file so they are all highlighted, then click Open. Click "Next" through the pages, then watch your files upload.</p>
+            </div>
+
+            <!-- AWS Cloudfront -->
+            <p class="title is-4" style="margin-top: 5px"><a class="header" name="cloudfront">AWS Cloudfront</a></p>
+            <div class="content has-text-justified">
+              <p>AWS Cloudfront is a Content Deliver Network (CDN). It allows us to distribute our website files across the entire globe if we wanted to.</p>
+              <p>Return to the AWS Console home page by clicking the AWS Logo at the top of the page.</p>
+              <p>In the search bar being typing "cloudfront" and select CloudFront once it appears.</p>
+              <p>Click New Distribution, then under Web select Get Started.</p>
+              <p>Next to Origin Domain Name, select our s3 URL</p>
+              <img src="assets/origin.png"/>
+              <p>Scroll down until you see the Price Class dropdown in the Distribution Settings section. Change the Price Class to be "Use Only U.S., Canada and Europe</p>
+              <img src="assets/price-class.png"/>
+              <p>Scroll down until you see the Default Root Object. Type in "index.html"</p>
+              <img src="assets/index.png"/>
+              <p>Scroll to the bottom, then click "Create Distribution". You should see a screen similar to the image below.</p>
+              <img src="assets/cloudfront.png"/>
+              <p>We must now give CloudFront access to get our files from S3. Select Origin Access Identity from the left hand menu. Click "Creat OAI". Copy the Amazon S3 Canonical User ID for later.</p>
+              <p>Navigate back to S3. Select your bucket. Click on the Permissions Tab, then the Bucket Policy button.</p>
+              <p>Paste the code below into the edit text area</p>
+              <p><pre><code>
+{
+  "Version":"2012-10-17",
+  "Id":"PolicyForCloudFrontPrivateContent",
+  "Statement":[
+    {
+      "Sid":" Grant a CloudFront Origin Identity access to support private content",
+      "Effect":"Allow",
+      "Principal":{"CanonicalUser":"CloudFrontOriginIdentityCanonicalUserID"},
+      "Action":"s3:GetObject",
+      "Resource":"arn:aws:s3:::examplebucket/*"
+    }
+  ]
+}
+              </code></pre></p>
+              <p>Replace "CloudFrontOriginIdentityCanonicalUserID" with your Amazon S3 Canonical User ID from earlier. Keeping the quotes. On Resource line replace the examplebucket with the name of your bucket.</p>
+              <p>Click save.</p>
+            </div>
+
+            <!-- Custom URL -->
+            <p class="title is-4" style="margin-top: 5px"><a class="header" name="dns">Purchasing a Custom URL</a></p>
+            <div class="content has-text-justified">
+              <p>In order for your site to appear like it's coming from your own custom URL, a domain name must be purchased through AWS's Route53 service. On average, a URL costs about $12.00 per year. If you aren't quite ready to spend money on your own domain name, you can forego this section and use cloudfront's URL.</p>
+              <p>Return to the AWS Console home page by clicking the AWS Logo at the top of the page.</p>
+              <p>In the search bar being typing "route53" and select Route 53 once it appears.</p>
             </div>
 
           </div>
