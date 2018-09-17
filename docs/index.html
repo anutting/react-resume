@@ -63,6 +63,7 @@
               <p>React Resume Guide is a tutorial for developing and hosting your own resume website using Facebook's popular JavaScript framework: React. Why use something like React for such a small project like this? Well, one of the cornerstone rules of software development is Don't Repeat Yourself (DRY). Leveraging Node.js and its package manager: <a href="https://www.npmjs.com/" target="_blank">Node Package Manager (NPM)</a>, we can easily import free and open source work created by a large community of contributors into our project! We can add interactive graphs, timelines, and other useful components for our React application just by typing a few commands.</p>
               <p>Once our React application is built, the next challenge is sharing it with others. Fortunately many cloud providers, AKA server renting companies,  provide tools for easily deploying an application to one of their computers and in minutes you can have your very own web server answering requests for your React application. I've chosen to use AWS for this project because they are the most commonly used cloud provider and that's what I am familiar with. Feel free to explore <a href="https://cloud.google.com" target="_blank">Google Cloud Platform</a>, <a href="https://azure.microsoft.com/en-us/" target="_blank">Microsoft Azure</a>, or <a href="https://www.digitalocean.com/" target="_blank">Digital Ocean</a>. All of them have free tiers or sign up credit that will allow you to use their services without any cost initially.</p>
               <p>This guide will take you through the required software setup, the AWS Account registration setup,  and the development of the application. All commands and screenshots will be for the Linux-based Operating System: Ubuntu. The steps will be similar with Windows, but extra configuration will be needed. I will do my best to provide the additional Windows instructions. If you are interested in trying out a new Operating System, I highly recommend looking into getting a <a href="https://www.raspberrypi.org/" target="_blank">Raspberry Pi</a>, a cheap computer perfect for small side projects like this one. It runs it's own Linux-based Operating System called Rasbian. However Rasbian is very similar to Ubuntu and the commands should not change. Let's get started by going over the software you'll need to install.</p>
+              <p>You can view the finished product here: <a href="http://d2srtygsco1mzn.cloudfront.net/#/">Alex Nutting - Resume</a></p>
             </div>
             <p class="title is-6">About this guide</p>
             <div class="content has-text-justified">
@@ -874,26 +875,11 @@ $ npm run build
               <img src="assets/index.png"/>
               <p>Scroll to the bottom, then click "Create Distribution". You should see a screen similar to the image below.</p>
               <img src="assets/cloudfront.png"/>
-              <p>We must now give CloudFront access to get our files from S3. Select Origin Access Identity from the left hand menu. Click "Creat OAI". Copy the Amazon S3 Canonical User ID for later.</p>
-              <p>Navigate back to S3. Select your bucket. Click on the Permissions Tab, then the Bucket Policy button.</p>
-              <p>Paste the code below into the edit text area</p>
-              <p><pre><code>
-{
-  "Version":"2012-10-17",
-  "Id":"PolicyForCloudFrontPrivateContent",
-  "Statement":[
-    {
-      "Sid":" Grant a CloudFront Origin Identity access to support private content",
-      "Effect":"Allow",
-      "Principal":{"CanonicalUser":"CloudFrontOriginIdentityCanonicalUserID"},
-      "Action":"s3:GetObject",
-      "Resource":"arn:aws:s3:::examplebucket/*"
-    }
-  ]
-}
-              </code></pre></p>
-              <p>Replace "CloudFrontOriginIdentityCanonicalUserID" with your Amazon S3 Canonical User ID from earlier. Keeping the quotes. On Resource line replace the examplebucket with the name of your bucket.</p>
-              <p>Click save.</p>
+              <p>We must now give CloudFront access to get our files from S3. Select our distribution, then click "Distribution Settings".</p>
+              <p>Navigate to the origins tab. Select Yes for "Restrict Bucket Access", "Create a New Identity", and "Yes, Update Bucket Policy"</p>
+              <p>Click "Yes, Edit" at the bottom.</p>
+              <p>Back on the CloudFront dashboard, the distribution will have a Pending status. Once it is in a "Deployed" status, you can copy the Domain Name, paste it into another browser tab, and load up your site!</p>
+              <p>From now on, If you would like to update your site, just rebuild the application using the command from the Project Build section, then Upload the files like we did in the AWS S3 section.</p>
             </div>
 
             <!-- Custom URL -->
@@ -902,8 +888,10 @@ $ npm run build
               <p>In order for your site to appear like it's coming from your own custom URL, a domain name must be purchased through AWS's Route53 service. On average, a URL costs about $12.00 per year. If you aren't quite ready to spend money on your own domain name, you can forego this section and use cloudfront's URL.</p>
               <p>Return to the AWS Console home page by clicking the AWS Logo at the top of the page.</p>
               <p>In the search bar being typing "route53" and select Route 53 once it appears.</p>
+              <img src="assets/route53.png"/>
+              <p>Under Register domain type in the name you want and choose your root domain. Then click Check. You'll notice prices vary wildly depending on the combination of domain name and root domain. Once you've found a combination you'd like, add it to your cart and check out. It may take some time before the purchase goes through. In the meantime, create a Hosted Zone for your domain. It should be of Type: Public Hosted Zone.</p>
+              <p>Create a Record Set. Name should be left blank. It is of Type CNAME. Yes it is an Alias. in the Target select or paste the cloudfront URL from the last section. Click Create. After the settings have resolved your new domain name should be serving your site!</p>
             </div>
-
           </div>
         </div>
       </div>
